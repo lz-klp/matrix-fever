@@ -96,8 +96,6 @@ void menuInicial(){ // função que cria o menu
         }
 
     }
-    
-
 }
 
 void iniJogadores(){ // inicia o vetor de jogadores com valores padrões
@@ -146,7 +144,7 @@ void limparMina(){ // limpa os tabuleiros, para que as posiçõees das minas pos
 
 void plantarDiamantes(){
     int lin,col; // variaveis inteiras para a linha e coluna sorteada para as pistas e armadilhas
-    int quilate; // linha do diamante especial que vai virar a pista  e quilate que sera convertido
+    int quilate; // quilate que sera convertido
     srand(time(NULL)); // função para mudar o valor da seed
 
     for(int i = 0; i < 39; i++){ // for que controla o numero de diamantes sorteadas
@@ -156,10 +154,12 @@ void plantarDiamantes(){
         if(mina_principal[lin][col].valor == '0'){ // verifica se esta vazia a posição sorteada
             if(i == 0){
                 mina_principal[lin][col].valor = '*'; // diamante especial que valerá 20 quilates
+                pistas[0] = lin;
+                pistas[1] = col;
             }
                 
             else{
-                quilate = 1 + rand() % 8;
+                quilate = 1 + (rand() % 9);
                 mina_principal[lin][col].valor = quilate +'0'; // converte int em char
             }
                 
@@ -198,8 +198,6 @@ void plantarEspeciais(){
 
         if(mina_principal[lin][col].valor == '0'){  // verifica se esta vazia a posição sorteada
             mina_principal[lin][col].valor = 'P';
-            pistas[0] = lin;
-            pistas[1] = col;
         }
         else // se nao regride a variavel do for para repetir o processo
             j--;
@@ -268,9 +266,9 @@ void somaPontos(int lin, int col,int player){ // função que identifica o valor
         printf("Seus Oponentes perdem 5 quilates");
         for(int i = 0;i<num_jogadores;i++){
             if(i!=player){
-                jogadores[player].score-=5;
-                if(jogadores[player].score<0)
-                    jogadores[player].score = 0;
+                jogadores[i].score-=5;
+                if(jogadores[i].score<0)
+                    jogadores[i].score = 0;
             }
         }
     }
@@ -301,9 +299,10 @@ void somaPontos(int lin, int col,int player){ // função que identifica o valor
 }
 
 void jogar(){ // função principal que controla o fluxo de jogo
-    int rodadas = 0,valido = 0,linha,coluna; // variaveis de controle e as que recebem a tentativa do jogador
+    int rodadas = 0,valido,linha,coluna; // variaveis de controle e as que recebem a tentativa do jogador
 
     for(int vez = 0;vez<num_jogadores;vez++){// for que controla os turnos dos jogadores
+        valido = 0;
         while(valido ==0){//controla se a escolha é válida
             system("cls");//limpa a tela
             //identifica o turno do jogador
@@ -377,7 +376,7 @@ int main(){
     plantarEspeciais();
 
     jogar();// função principal da partida
-    resultado();
+    resultado();//verifica quem ganhou ao final
 
     //libera os ponteiros
     liberarMinas();
