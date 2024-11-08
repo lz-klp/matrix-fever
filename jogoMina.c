@@ -49,8 +49,8 @@ void liberarMinas() { //função que libera a memória alocadas das matrizes
     free(mina_exibida);
 }
 
-void menuInicial(){ // função que cria o menu
-    int valido = 0; //variavel de controle
+int menuInicial(){ // função que cria o menu
+    int valido = 0,num; //variavel de controle
     system("cls"); // limpa a tela
    // for's que criam o contorno do menu
     for(int i = 1; i <= 118; i++){ // contorno superior
@@ -83,9 +83,9 @@ void menuInicial(){ // função que cria o menu
         gotoxy(38,14);
         printf("-> ");
         fflush(stdin);
-        scanf("%d",&num_jogadores); // salva a escolha do usuario
+        scanf("%d",&num); // salva a escolha do usuario
 
-        if(num_jogadores > 1 && num_jogadores < 5){// verifica se a entrada do usuário é valida
+        if(num > 1 && num < 5){// verifica se a entrada do usuário é valida
             valido = 1; //valida a escolha e quebra o loop
         }
         else{
@@ -96,6 +96,7 @@ void menuInicial(){ // função que cria o menu
         }
 
     }
+    return num;
 }
 
 void iniJogadores(){ // inicia o vetor de jogadores com valores padrões
@@ -365,7 +366,7 @@ int main(){
     SetConsoleOutputCP(CP_UTF8);
 
     inicializarMinas();//aloca a memoria das matrizes
-    menuInicial();// seleção de numero de jogadores
+    num_jogadores = menuInicial();// seleção de numero de jogadores
     jogadores = (jogador *)malloc(num_jogadores * sizeof(jogador));//alocação do vetor de jogadores
 
     iniJogadores();//incialização dos vetores e depois seleção de nomes
